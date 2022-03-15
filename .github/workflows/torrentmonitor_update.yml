@@ -3,6 +3,7 @@ name: Update TorrentMonitor version
 on:
   schedule:
     - cron: 58 * * * *
+  workflow_dispatch:
 
 jobs:
   update_torrentmonitor:
