@@ -34,7 +34,7 @@ jobs:
 
           echo "Base pr_branch=${PR_BRANCH}, date=${DATE}, tm_version=${TM_VERSION}"
 
-          TM_TAG='v${TM_VERSION}-1'
+          TM_TAG="v${TM_VERSION}-1"
           echo "::set-output name=release_tag::${TM_TAG}"
 
       - name: Create Pull Request, Bump tm-latest.zip, torrentmonitor version ${{ steps.downloadtorrentmonitor.outputs.tm_version }}
