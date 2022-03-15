@@ -34,6 +34,7 @@ jobs:
           echo "Base pr_branch=${PR_BRANCH}, date=${DATE}, tm_version=${TM_VERSION}"
 
       - name: Create Pull Request, Bump tm-latest.zip, torrentmonitor version ${{ steps.downloadtorrentmonitor.outputs.tm_version }}
+        id: createpr
         uses: peter-evans/create-pull-request@v3.12.1
         with:
           branch: ${{ steps.downloadtorrentmonitor.outputs.pr_branch }}
@@ -48,3 +49,21 @@ jobs:
             dependencies
             github_actions
             release
+
+  notify_telegram:
+    name: Notify owner on Telegram
+    needs: [update_torrentmonitor]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify
+        uses: appleboy/telegram-action@v0.1.1
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          disable_web_page_preview: true
+          message: |
+            PR created for a new TM version ${{ steps.downloadtorrentmonitor.outputs.tm_version }}
+
+            See details:
+            ${{ steps.createpr.outputs.pull-request-url }}
+
