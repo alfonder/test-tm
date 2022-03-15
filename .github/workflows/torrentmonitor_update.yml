@@ -61,7 +61,7 @@ jobs:
           echo "SHA: " ${{ steps.createpr.outputs.pull-request-head-sha }}
 
       - name: Notify owner on Telegram
-        if: ${{ steps.createpr.outputs.pull-request-operation }} == created
+        if: ${{ steps.createpr.outputs.pull-request-operation == 'created' }}
         uses: appleboy/telegram-action@v0.1.1
         with:
           to: ${{ secrets.TELEGRAM_TO }}
