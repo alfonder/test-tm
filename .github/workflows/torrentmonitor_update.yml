@@ -55,7 +55,7 @@ jobs:
             release
 
       - name: Notify owner on Telegram
-        if: ${{ steps.createpr.outputs.pull-request-number }}
+        if: ${{ steps.createpr.outputs.pull-request-operation }} == created
         uses: appleboy/telegram-action@v0.1.1
         with:
           to: ${{ secrets.TELEGRAM_TO }}
@@ -76,7 +76,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: 'refs/tags/${{ steps.downloadtorrentmonitor.outputs.release_tag }}',
-              sha: context.sha
+              sha: ${{ steps.createpr.outputs.pull-request-head-sha }}
               })
 
 # vi:et:sw=2
