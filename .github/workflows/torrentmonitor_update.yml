@@ -55,7 +55,11 @@ jobs:
             release
 
       - name: debug
-        uses: hmarr/debug-action@v2
+        shell: bash
+        run: |
+          echo "Operation: " ${{ steps.createpr.outputs.pull-request-operation }}
+          echo "SHA: " ${{ steps.createpr.outputs.pull-request-head-sha }}
+
 
       - name: Notify owner on Telegram
         if: ${{ steps.createpr.outputs.pull-request-operation }} == created
