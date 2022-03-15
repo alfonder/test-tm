@@ -59,6 +59,7 @@ jobs:
         run: |
           echo "Operation: " ${{ steps.createpr.outputs.pull-request-operation }}
           echo "SHA: " ${{ steps.createpr.outputs.pull-request-head-sha }}
+          echo "old SHA: " context.sha
 
 
       - name: Notify owner on Telegram
