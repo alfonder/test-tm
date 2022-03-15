@@ -34,6 +34,9 @@ jobs:
 
           echo "Base pr_branch=${PR_BRANCH}, date=${DATE}, tm_version=${TM_VERSION}"
 
+          TM_TAG='v${TM_VERSION}-1'
+          echo "::set-output name=release_tag::${TM_TAG}"
+
       - name: Create Pull Request, Bump tm-latest.zip, torrentmonitor version ${{ steps.downloadtorrentmonitor.outputs.tm_version }}
         id: createpr
         uses: peter-evans/create-pull-request@v3.12.1
@@ -64,3 +67,16 @@ jobs:
             See details:
             ${{ steps.createpr.outputs.pull-request-url }}
 
+      - name: Set tag ${{ steps.downloadtorrentmonitor.outputs.release_tag }}
+        if: ${{ steps.createpr.outputs.pull-request-number }}
+        uses: actions/github-script@v5.1.0
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.downloadtorrentmonitor.outputs.release_tag }}',
+              sha: context.sha
+              })
+
+# vi:et:sw=2
