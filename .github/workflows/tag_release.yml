@@ -4,7 +4,7 @@ on:
   pull_request_review:
     types:
       - submitted
-   workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   set-tag-in-repo:
@@ -12,15 +12,21 @@ jobs:
     steps:
 
       - name: Get version string
+        id: getver
         shell: bash
         run: |
           TM_VERSION=''
-          TM_TAG='v${TM_VERSION}-1'
+          TM_TAG="v${TM_VERSION}-1"
           echo "::set-output name=release_tag::${TM_TAG}"
 
           echo "TM release version ${TM_VERSION}, tag: ${TM_TAG}"
 
-      - name: Set tag ${{ steps.git.outputs.release_tag }}
+      - name: debug
+        shell: bash
+        run: |
+          echo "Labels: " ${{ github.event.pull_request.labels.* }}
+
+      - name: Set tag ${{ steps.getver.outputs.release_tag }}
         if: |
           github.event.review.state == 'approved' &&
           contains(github.event.pull_request.labels.*.name, 'release')

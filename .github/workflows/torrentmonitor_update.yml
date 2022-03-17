@@ -73,16 +73,16 @@ jobs:
             See details:
             ${{ steps.createpr.outputs.pull-request-url }}
 
-      - name: Set tag ${{ steps.downloadtorrentmonitor.outputs.release_tag }}
-        if: ${{ steps.createpr.outputs.pull-request-number }}
-        uses: actions/github-script@v5.1.0
-        with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/${{ steps.downloadtorrentmonitor.outputs.release_tag }}',
-              sha: '${{ steps.createpr.outputs.pull-request-head-sha }}'
-              })
+#      - name: Set tag ${{ steps.downloadtorrentmonitor.outputs.release_tag }}
+#        if: ${{ steps.createpr.outputs.pull-request-number }}
+#        uses: actions/github-script@v5.1.0
+#        with:
+#          script: |
+#            github.rest.git.createRef({
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              ref: 'refs/tags/${{ steps.downloadtorrentmonitor.outputs.release_tag }}',
+#              sha: '${{ steps.createpr.outputs.pull-request-head-sha }}'
+#              })
 
 # vi:et:sw=2
