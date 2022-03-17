@@ -1,25 +1,27 @@
 name: Set tag on a new version release
 
 on:
-  pull_request_review:
+  pull_request:
     types:
-      - submitted
+      - closed
   workflow_dispatch:
 
 jobs:
   set-tag-in-repo:
+    if: github.event.pull_request.merged == true &&
+    contains(github.event.pull_request.labels.*.name, 'release')
     runs-on: ubuntu-latest
     steps:
 
-      - name: Get version string
-        id: getver
-        shell: bash
-        run: |
-          TM_VERSION=''
-          TM_TAG="v${TM_VERSION}-1"
-          echo "::set-output name=release_tag::${TM_TAG}"
+      #      - name: Get version string
+      #        id: getver
+      #        shell: bash
+      #        run: |
+      #          TM_VERSION=''
+      #          TM_TAG="v${TM_VERSION}-1"
+      #          echo "::set-output name=release_tag::${TM_TAG}"
 
-          echo "TM release version ${TM_VERSION}, tag: ${TM_TAG}"
+      #          echo "TM release version ${TM_VERSION}, tag: ${TM_TAG}"
 
       - name: debug
         shell: bash
@@ -27,9 +29,6 @@ jobs:
           echo "Milestone: " ${{ github.event.pull_request.milestone.title }}
 
       - name: Set tag
-        if: |
-          github.event.review.state == 'approved' &&
-          contains(github.event.pull_request.labels.*.name, 'release')
         uses: actions/github-script@v5.1.0
         with:
           script: |
