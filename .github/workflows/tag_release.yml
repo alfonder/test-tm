@@ -12,17 +12,6 @@ jobs:
       contains(github.event.pull_request.labels.*.name, 'release')
     runs-on: ubuntu-latest
     steps:
-
-      #      - name: Get version string
-      #        id: getver
-      #        shell: bash
-      #        run: |
-      #          TM_VERSION=''
-      #          TM_TAG="v${TM_VERSION}-1"
-      #          echo "::set-output name=release_tag::${TM_TAG}"
-
-      #          echo "TM release version ${TM_VERSION}, tag: ${TM_TAG}"
-
       - name: debug
         shell: bash
         run: |

@@ -2,10 +2,6 @@ name: Build and Deploy image
 
 on:
   push:
-  workflow_run:
-    workflows: [Set tag on a new version release]
-    types:
-      - completed
 
 env:
   PLATFORMS: "linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le"
@@ -16,6 +12,22 @@ jobs:
     name: Build and publish Docker image
     runs-on: ubuntu-latest
     steps:
+      - name: Wait for tagging
+        id: wait-tag
+        uses: tomchv/wait-my-workflow@v1.1.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: set-tag-in-repo
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          intervalSeconds: 10
+          timeoutSeconds: 120
+
+      - name: Check tagging failure
+        if: |
+          steps.wait-tag.outputs.conclusion == 'failure' ||
+          steps.wait-tag.outputs.conclusion == 'timed_out'
+        uses: andymckay/cancel-action@0.2
+
       - name: Checkout
         uses: actions/checkout@v2.4.0
 
