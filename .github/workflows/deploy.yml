@@ -12,6 +12,11 @@ jobs:
     name: Build and publish Docker image
     runs-on: ubuntu-latest
     steps:
+      - name: Delay to ensure DB sync
+        shell: bash
+        run: |
+          sleep 30
+
       - name: Wait for tagging
         id: wait-tag
         uses: tomchv/wait-my-workflow@v1.1.0
