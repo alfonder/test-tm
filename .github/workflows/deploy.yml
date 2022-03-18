@@ -44,7 +44,7 @@ jobs:
           BRANCH=$(echo ${GITHUB_REF} | sed -e "s/.*\///g")
           echo "::set-output name=branch::${BRANCH}"
 
-          if [[ ${BRANCH} == "master" ]]; then
+          if [[ ${BRANCH} == "master" || ${BRANCH} == "main" ]]; then
             IMAGE_TAG="devel"
           else
             IMAGE_TAG=${BRANCH}
